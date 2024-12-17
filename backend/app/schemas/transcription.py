@@ -11,7 +11,3 @@ class TranscriptionRead(SQLModel):
   filename: str
   transcribed_text: Optional[str] = None
   created_at: datetime
-
-class TranscriptionUpdate(SQLModel):
-  filename: Optional[str] = None
-  transcribed_text: Optional[str] = None

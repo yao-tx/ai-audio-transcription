@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Search as SearchIcon } from "lucide-react";
 
 import { FileUploadInterface } from "./components/FileUploadInterface";
 import { HeaderMenu } from "./components/ui/HeaderMenu";

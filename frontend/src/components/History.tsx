@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { format } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 
 import { Card } from "./ui/Card";
 import { ErrorAlert } from "./ui/ErrorAlert";
@@ -23,7 +25,13 @@ export function History() {
         id: item.id,
         fileName: item.filename,
         transcribedText: item.transcribed_text,
-        createdAt: item.created_at,
+        createdAt: format(
+          toZonedTime(
+            new Date(Date.parse(item.created_at + 'Z')),
+            "Asia/Singapore",
+          ),
+          "yyyy-MM-dd HH:mm:ss",
+        ),
       }));
 
       setData(transformedData);
@@ -47,7 +55,7 @@ export function History() {
     <>
       <HeaderMenu />
       <div className="h-full flex flex-col gap-8 justify-start items-center px-4 mb-8">
-        <h1 className="text-4xl font-bold">Transcriptions History</h1>
+        <h1 className="text-4xl font-bold">Transcription History</h1>
         <div className="flex flex-col gap-4 w-full">
           {isLoading ? (
             Array.from({ length: 3 }).map((_, index) => (
@@ -62,6 +70,7 @@ export function History() {
                   <Card key={item.id}>
                     <p className="font-bold text-lg">{item.fileName}</p>
                     <p>{item.transcribedText}</p>
+                    <p className="text-sm mt-6 text-gray-400">{item.createdAt}</p>
                   </Card>
                 ))
               ): (

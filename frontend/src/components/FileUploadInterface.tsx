@@ -20,6 +20,7 @@ export function FileUploadInterface({ className }: FileUploadInterface) {
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setErrors([]);
+    setData([]);
     setIsLoading(true);
 
     const formData = new FormData();

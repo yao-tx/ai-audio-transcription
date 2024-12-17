@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { format } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 import { Search as SearchIcon, Loader2 } from "lucide-react";
 
 import { Card } from "./ui/Card";
@@ -26,12 +28,17 @@ export function Search() {
 
       try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/search?term=${term}`);
-        console.log(response);
         const formattedData: TranscriptionData[] = response.data.map((item: any) => ({
           id: item.id,
           fileName: item.filename,
           transcribedText: item.transcribed_text,
-          createdAt: item.created_at,
+          createdAt: format(
+            toZonedTime(
+              new Date(Date.parse(item.created_at + 'Z')),
+              "Asia/Singapore",
+            ),
+            "yyyy-MM-dd HH:mm:ss",
+          ),
         }));
 
         setData(formattedData);
@@ -85,6 +92,7 @@ export function Search() {
                 <Card key={item.id} className="w-full">
                   <p className="font-bold text-lg">{item.fileName}</p>
                   <p>{item.transcribedText}</p>
+                  <p className="text-sm mt-6 text-gray-400">{item.createdAt}</p>
                 </Card>
               ))}
             </>
