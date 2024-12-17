@@ -4,6 +4,7 @@ import { clsx } from "clsx";
 import { FileRejection } from "react-dropzone";
 
 import { Card } from "./ui/Card";
+import { ErrorAlert } from "./ui/ErrorAlert";
 import { FileDropzone } from "./FileDropzone";
 
 import type { TranscriptionData } from "../types/transcription";
@@ -48,6 +49,7 @@ export function FileUploadInterface({ className }: FileUploadInterface) {
       } else {
         setErrors([`Error uploading file(s): ${error}.`]);
       }
+
       setIsLoading(false);
     }
   }, []);
@@ -72,10 +74,10 @@ export function FileUploadInterface({ className }: FileUploadInterface) {
 
   return (
     <div className={clsx(
-      "h-full w-full max-w-3xl",
+      "h-full w-full max-w-3xl mb-8",
       className,
     )}>
-      <h1 className="text-3xl font-bold">AI Audio Transcription</h1>
+      <h1 className="text-4xl font-bold">AI Audio Transcription</h1>
       <p>This is an AI audio transcriber that transcribes MP3 audio files that you upload.</p>
       <FileDropzone
         className="w-full"
@@ -84,13 +86,13 @@ export function FileUploadInterface({ className }: FileUploadInterface) {
         onDropRejected={onDropRejected}
       />
       {errors.length > 0 &&
-        <div className="p-3 bg-red-200 border border-red-400 rounded-md text-red-900 w-full">
+        <ErrorAlert>
           <ul>
-          {errors.map((error, index) => (
-            <li key={index}>{error}</li>
-          ))}
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
           </ul>
-        </div>
+        </ErrorAlert>
       }
       {errors.length === 0 && data.length !== 0 && (
         <div className="flex flex-col gap-4">

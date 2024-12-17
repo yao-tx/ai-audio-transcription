@@ -23,7 +23,7 @@ function Home() {
   return (
     <>
       <HeaderMenu />
-      <div className="min-h-screen px-4 flex flex-col items-center justify-center">
+      <div className="h-full px-4 flex flex-col items-center justify-center mt-12">
         <FileUploadInterface className="flex flex-col gap-5 items-center justify-center" />
       </div>
     </>

@@ -2,7 +2,7 @@ import { Search as SearchIcon } from "lucide-react"
 
 export function HeaderMenu() {
   return (
-    <div className="absolute top-0 w-full bg-white flex flex-row justify-between items-center p-4">
+    <div className="sticky mb-12 w-full bg-white flex flex-row justify-between items-center p-4">
       <a
         href="/search"
         className="bg-neutral-900 text-white hover:bg-neutral-700 rounded-md py-2 px-4"
