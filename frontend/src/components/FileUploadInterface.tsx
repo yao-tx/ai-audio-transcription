@@ -3,7 +3,10 @@ import axios from "axios";
 import { clsx } from "clsx";
 import { FileRejection } from "react-dropzone";
 
+import { Card } from "./ui/Card";
 import { FileDropzone } from "./FileDropzone";
+
+import type { TranscriptionData } from "../types/transcription";
 
 type FileUploadInterface = {
   className?: string;
@@ -12,6 +15,7 @@ type FileUploadInterface = {
 export function FileUploadInterface({ className }: FileUploadInterface) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<string[]>([]);
+  const [data, setData] = useState<TranscriptionData[]>([]);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setErrors([]);
@@ -29,7 +33,14 @@ export function FileUploadInterface({ className }: FileUploadInterface) {
         }
       );
 
-      console.log(response);
+      const transformedData = response.data.map((item: any) => ({
+        id: item.id,
+        fileName: item.filename,
+        transcribedText: item.transcribed_text,
+        createdAt: item.created_at,
+      }));
+
+      setData(transformedData);
       setIsLoading(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -81,6 +92,17 @@ export function FileUploadInterface({ className }: FileUploadInterface) {
           </ul>
         </div>
       }
+      {errors.length === 0 && data.length !== 0 && (
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl font-bold">Results:</h2>
+          {data.map((item) => (
+            <Card key={item.id}>
+              <p className="font-bold text-lg">{item.fileName}</p>
+              <p>{item.transcribedText}</p>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

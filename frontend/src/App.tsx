@@ -1,14 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Search as SearchIcon } from "lucide-react";
 
 import { FileUploadInterface } from "./components/FileUploadInterface";
-import { SearchHistory } from "./components/SearchHistory";
+import { HeaderMenu } from "./components/ui/HeaderMenu";
+import { History } from "./components/History";
+import { Search } from "./components/Search";
 
 export function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/search" element={<SearchHistory />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/search" element={<Search />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
@@ -17,16 +21,12 @@ export function App() {
 
 function Home() {
   return (
-    <div className="min-h-screen px-4 flex flex-col items-center justify-center">
-      <FileUploadInterface className="flex flex-col gap-5 items-center justify-center" />
-      <a
-        href="/search"
-        className="absolute m-3 top-0 right-0 bg-neutral-900 text-white hover:bg-neutral-800 rounded-md py-2 px-4"
-        aria-label="Search all upload history"
-      >
-        Search History
-      </a>
-    </div>
+    <>
+      <HeaderMenu />
+      <div className="min-h-screen px-4 flex flex-col items-center justify-center">
+        <FileUploadInterface className="flex flex-col gap-5 items-center justify-center" />
+      </div>
+    </>
   );
 }
 
