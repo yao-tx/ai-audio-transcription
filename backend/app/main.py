@@ -10,16 +10,16 @@ from .schemas import TranscriptionRead, TranscriptionCreate
 from .services.transcription_service import TranscriptionService
 from .routes.transcriptions import router as transcription_router
 
-from .database import create_db_and_tables, get_session
+from .database import create_db_and_tables
 from .models import Transcription
 
 app = FastAPI(title="AI Audio Transcription")
 
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"]
+  CORSMiddleware,
+  allow_origins=["*"],
+  allow_methods=["*"],
+  allow_headers=["*"]
 )
 
 @app.on_event("startup")

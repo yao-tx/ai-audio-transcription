@@ -21,11 +21,13 @@ export function FileUploadInterface({ className }: FileUploadInterface) {
     acceptedFiles.forEach((file) => formData.append("files", file));
 
     try {
-      const response = await axios.post("http://localhost:8000/transcribe", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/transcribe`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       console.log(response);
       setIsLoading(false);

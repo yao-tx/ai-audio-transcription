@@ -21,7 +21,7 @@ function Home() {
       <FileUploadInterface className="flex flex-col gap-5 items-center justify-center" />
       <a
         href="/search"
-        className="absolute top-0 right-0 m-2"
+        className="absolute m-3 top-0 right-0 bg-neutral-900 text-white hover:bg-neutral-800 rounded-md py-2 px-4"
         aria-label="Search all upload history"
       >
         Search History
