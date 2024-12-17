@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Search as SearchIcon, Loader2 } from "lucide-react";
 
+import { Card } from "./ui/Card";
 import { ErrorAlert } from "./ui/ErrorAlert";
 import { HeaderMenu } from "./ui/HeaderMenu";
-import { useDebounce } from "../hooks/use-debounce";
 
 import type { TranscriptionData } from "../types/transcription";
 
 export function Search() {
-  const [data, setData] = useState<TranscriptionData>();
+  const [data, setData] = useState<TranscriptionData[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,34 +21,45 @@ export function Search() {
 
     if (term) {
       setIsLoading(true);
+      setHasSearched(true);
+      setError(null);
 
       try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/search?term=${term}`);
         console.log(response);
+        const formattedData: TranscriptionData[] = response.data.map((item: any) => ({
+          id: item.id,
+          fileName: item.filename,
+          transcribedText: item.transcribed_text,
+          createdAt: item.created_at,
+        }));
+
+        setData(formattedData);
       } catch(error) {
         if (axios.isAxiosError(error)) {
-          setError(`Error retrieving search results: ${error.message}`);
+          const errorMessage = error.response?.data?.message ?? error.message;
+          setError(`Error retrieving search results: ${errorMessage}`);
         } else {
-          setError(`Error retrieving search results: ${error}.`);
+          setError("An unexpected error occurred while fetching search results.");
         }
       } finally {
         setIsLoading(false);
       }
 
     } else {
-      setError("Enter a search term.");
+      setError("Please enter a search term.");
     }
   }
 
   return (
     <>
       <HeaderMenu />
-      <div className="h-full flex flex-col gap-8 justify-start items-center px-4">
+      <div className="h-full flex flex-col gap-8 justify-start items-center px-4 mb-8">
         <h1 className="text-4xl font-bold">Search Results</h1>
-        <div className="w-full max-w-4xl flex flex-col gap-8">
+        <div className="w-full max-w-4xl flex flex-col gap-8 items-center">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-row"
+            className="flex flex-row w-full"
           >
             <input
               type="text"
@@ -58,16 +70,29 @@ export function Search() {
             />
             <button
               type="submit"
+              aria-label="Search"
               className="bg-neutral-900 hover:bg-neutral-800 text-white px-4 h-full py-3 border border-black rounded-md rounded-l-none"
             >
               <SearchIcon className="w-6 h-6" />
               <span className="sr-only">Search</span>
             </button>
           </form>
-          {isLoading && !error && (
+          {isLoading ? (
             <Loader2 className="animate-spin h-12 w-12" />
+          ): (
+            <>
+              {data.map((item) => (
+                <Card key={item.id} className="w-full">
+                  <p className="font-bold text-lg">{item.fileName}</p>
+                  <p>{item.transcribedText}</p>
+                </Card>
+              ))}
+            </>
           )}
           {error && <ErrorAlert>{error}</ErrorAlert>}
+          {!isLoading && !error && data.length === 0 && hasSearched && (
+            <p className="text-center">No results found.</p>
+          )}
         </div>
       </div>
     </>

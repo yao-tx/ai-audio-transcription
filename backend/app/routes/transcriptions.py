@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile, Depends
+from fastapi import APIRouter, Query, File, UploadFile, Depends
 from sqlmodel import Session, select
 from sqlalchemy import desc
 from typing import List, Optional
@@ -21,8 +21,21 @@ async def get_all_transcriptions(db: Session = Depends(get_session)):
 
   return results
 
+@router.get("/search", response_model=List[TranscriptionRead])
+async def get_transcriptions_by_filename(
+  search_term: Optional[str] = Query(None, alias="term"),
+  db: Session = Depends(get_session)
+):
+  if not search_term:
+    raise HTTPException(status_code=400, details="Missing search term parameter")
 
-@router.post("/transcribe", response_model=List[TranscriptionCreate])
+  statement = select(Transcription).where(Transcription.filename.ilike(f"%{search_term}%"))
+  results = db.exec(statement).all()
+
+  return results
+
+
+@router.post("/transcribe", response_model=List[TranscriptionRead])
 async def upload_single_or_multiple_files(
   files: List[UploadFile] = File(...),
   db: Session = Depends(get_session)
@@ -68,8 +81,10 @@ async def upload_single_or_multiple_files(
       db.refresh(transcription)
 
       transcriptions.append({
+        "id": transcription.id,
         "filename": transcription.filename,
-        "transcribed_text": transcription.transcribed_text
+        "transcribed_text": transcription.transcribed_text,
+        "created_at": transcription.created_at
       })
     except Exception as e:
       print(f"Error processing {file.filename}: {str(e)}")
