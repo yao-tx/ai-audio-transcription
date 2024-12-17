@@ -1,28 +1,49 @@
-import { useCallback } from "react";
-import axios from "axios";
-import { FileDropzone } from './components/FileDropzone'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import { FileUploadInterface } from "./components/FileUploadInterface";
+import { SearchHistory } from "./components/SearchHistory";
 
 export function App() {
-  const handleOnUpload = useCallback(async (acceptedFiles: File[]) => {
-    const formData = new FormData();
-    acceptedFiles.forEach((file) => formData.append("files", file));
-
-    try {
-      const response = await axios.post("http://localhost:8000/transcribe", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      console.log(response);
-    } catch (error) {
-      console.error("Error uploading files:", error);
-    }
-  }, []);
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-5">
-      <h1 className="text-3xl font-bold">AI Audio Transcription</h1>
-      <FileDropzone onDrop={handleOnUpload}/>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<SearchHistory />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  )
+}
+
+function Home() {
+  return (
+    <div className="min-h-screen px-4 flex flex-col items-center justify-center">
+      <FileUploadInterface className="flex flex-col gap-5 items-center justify-center" />
+      <a
+        href="/search"
+        className="absolute top-0 right-0 m-2"
+        aria-label="Search all upload history"
+      >
+        Search History
+      </a>
+    </div>
+  );
+}
+
+function NotFound() {
+  return (
+    <div className="min-h-screen px-4 flex flex-col items-center justify-center gap-8">
+      <div className="flex flex-col gap-4 text-center">
+        <h1 className="text-4xl font-bold">Page Not Found!</h1>
+        <p>The URL you have requested is not available.</p>
+      </div>
+      <a
+        href="/"
+        className="px-8 py-4 bg-neutral-900 rounded-lg hover:bg-neutral-800 text-white"
+        aria-label="Go back to homepage"
+      >
+        Go Back Home
+      </a>
     </div>
   )
 }
