@@ -1,9 +1,3 @@
-"""
-AI Audio Transcription Backend
-
-This package is a FastAPI-based backend service for audio transcription using the Whisper speech regonition model.
-"""
-
 import logging
 
 logging.basicConfig(
