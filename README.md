@@ -4,6 +4,10 @@ This is a full-stack web app that uses the `openai/whisper-mini` model to transc
 
 It allows users to upload one or more mp3 audio files, and the web app will transcribe the audio files, store the results in database, and display them.
 
+## Demo
+
+https://www.loom.com/share/58818ff3420d419f92d78f7c6fe3e3b8
+
 ## Tech Stack
 
 - Backend: FastAPI + Python
