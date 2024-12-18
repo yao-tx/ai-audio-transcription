@@ -2,25 +2,64 @@
 
 ## Introduction
 
-This is the backend of the AI Audio Transcription web app. It uses the openai/whisper-tiny model for transcribing mp3 audio files.
-
-It is built with FastAPI and uses sqlite database internally.
+This is the backend of the AI Audio Transcription web app. It uses the openai/whisper-tiny model for transcribing mp3 audio files. It is built with FastAPI + Python and uses SQLite database.
 
 It is paired with a React + Vite frontend web app.
 
-## Get Started with Docker
+## Getting Started (Local Development)
 
-The backend comes with `Dockerfile` and `docker-compose.yml` files. To get started with Docker, make sure you are in the root directory of the backend project, and run the following commands in your terminal:
+1. Clone the repository.
 
+2. Set up a Python virtual environment.
+
+```bash
+python -m venv venv
 ```
-# docker-compose build
-# docker-compose up -d
+
+3. Activate the virtual environment.
+
+```bash
+# On Windows
+.\venv\Scripts\activate
+
+# On macOS and Linux
+source venv/bin/activate
+```
+
+4. Install dependencies.
+
+```bash
+pip install -r requirements.txt
+```
+
+5. Start the server.
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+## Getting Started (Docker)
+
+The backend comes with `Dockerfile` and `docker-compose.yml` files. To get started with Docker:
+
+1. Clone the repository.
+
+2. In the root directory of the backend project, run the following commands:
+
+```bash
+docker-compose build
+
+docker-compose up -d
+# or
+docker-compose up
 ```
 
 ## Testing
 
-Test files are located in the `tests` directory. To run the tests, you can run the following command in the root directory in your terminal:
+Test files are located in the `tests` directory. To run the test cases, you can run the following command in the root directory in your terminal:
 
-```
-# pytest tests
+```bash
+pytest tests
+# or
+python -m pytest tests
 ```
