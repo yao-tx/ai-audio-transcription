@@ -1,27 +1,23 @@
 import React from "react";
-import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from "@testing-library/react";
 import { App } from "../src/App";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { MemoryRouter } from "react-router-dom";
 
-jest.mock("../src/components/FileUploadInterface", () => ({
+vi.mock("../src/components/FileUploadInterface", () => ({
   FileUploadInterface: () => <div data-testid="file-upload-interface">File Upload Interface</div>
 }));
 
-jest.mock("../src/components/ui/HeaderMenu", () => ({
+vi.mock("../src/components/ui/HeaderMenu", () => ({
   HeaderMenu: () => <header data-testid="header-menu">Header Menu</header>
 }));
 
 describe("App Component Routing", () => {
-  test("renders home page by default", () => {
+  it("renders home page by default", () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>
-    )
-  });
+      <App />
+    );
 
-  expect(screen.getByTestId("header-menu")).toBeInTheDocument();
-  expect(screen.getByTestId("file-upload-interface")).toBeInTheDocument();
-})
+    expect(screen.getByTestId("header-menu")).toBeInTheDocument();
+    expect(screen.getByTestId("file-upload-interface")).toBeInTheDocument();
+  });
+});

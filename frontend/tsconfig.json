@@ -1,12 +1,8 @@
 {
-  "compilerOptions": {
-    "module": "es2022",
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "jsx": "react-jsx"
-  },
   "files": [],
-  "include": ["src", "./jest.setup.ts"],
+  "compilerOptions": {
+    "noEmit": true,
+  },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
