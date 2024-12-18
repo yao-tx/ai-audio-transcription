@@ -1,23 +1,49 @@
 import React from "react";
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from "@testing-library/react";
-import { App } from "../src/App";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { Home, NotFound } from "../src/App";
+import { History } from "../src/components/History";
+import { Search } from "../src/components/Search";
 
-vi.mock("../src/components/FileUploadInterface", () => ({
-  FileUploadInterface: () => <div data-testid="file-upload-interface">File Upload Interface</div>
-}));
-
-vi.mock("../src/components/ui/HeaderMenu", () => ({
-  HeaderMenu: () => <header data-testid="header-menu">Header Menu</header>
-}));
+const renderWithRouter = (initialRoutes = ['/']) => {
+  return render(
+    <MemoryRouter initialEntries={initialRoutes}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </MemoryRouter>
+  )
+}
 
 describe("App Component Routing", () => {
-  it("renders home page by default", () => {
-    render(
-      <App />
-    );
+  it("renders Home component for root path", () => {
+    renderWithRouter(['/']);
 
-    expect(screen.getByTestId("header-menu")).toBeInTheDocument();
-    expect(screen.getByTestId("file-upload-interface")).toBeInTheDocument();
+    expect(screen.getByRole("banner")).toBeInTheDocument();
+    expect(screen.getByText("AI Audio Transcription")).toBeInTheDocument();
+  });
+
+  it("renders History component for history path", () => {
+    renderWithRouter(["/history"]);
+
+    expect(screen.getByRole("banner")).toBeInTheDocument();
+    expect(screen.getByText("Transcription History")).toBeInTheDocument();
+  });
+
+  it("renders Search component for search path", () => {
+    renderWithRouter(["/search"]);
+
+    expect(screen.getByRole("banner")).toBeInTheDocument();
+    expect(screen.getByText("Search Results")).toBeInTheDocument();
+  });
+
+  it("renders NotFound component for invalid paths", () => {
+    renderWithRouter(["/invalid-route"]);
+
+    expect(screen.getByText("Page Not Found!")).toBeInTheDocument();
   });
 });

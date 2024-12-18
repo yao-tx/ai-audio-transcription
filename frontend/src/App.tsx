@@ -18,7 +18,7 @@ export function App() {
   )
 }
 
-function Home() {
+export function Home() {
   return (
     <>
       <HeaderMenu />
@@ -29,7 +29,7 @@ function Home() {
   );
 }
 
-function NotFound() {
+export function NotFound() {
   return (
     <div className="min-h-screen px-4 flex flex-col items-center justify-center gap-8">
       <div className="flex flex-col gap-4 text-center">

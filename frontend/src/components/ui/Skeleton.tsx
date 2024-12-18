@@ -17,11 +17,14 @@ export function Skeleton({ className }: React.HTMLAttributes<HTMLDivElement>) {
 export function SkeletonCard({ className }: React.HTMLAttributes<HTMLDivElement>) {
   return (
       <Card className={clsx(
-        "flex flex-col gap-4",
-        className,
-      )}>
+          "flex flex-col gap-4",
+          className,
+      )} data-testid="skeleton-card">
         <Skeleton className="h-6 w-1/4" />
-        <div className="flex flex-col gap-2">
+        <div
+          data-testid="skeleton-card"
+          className="flex flex-col gap-2"
+        >
           <Skeleton className="h-4 w-2/4" />
           <Skeleton className="h-4 w-3/4" />
           <Skeleton className="h-4 w-3/4" />

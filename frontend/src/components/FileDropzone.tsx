@@ -28,11 +28,22 @@ export function FileDropzone({ className, isLoading, onDrop, onDropRejected }: F
         }`}
       >
         {isLoading ? (
-          <Loader2 className="w-20 h-20 animate-spin text-gray-400" />
+          <div
+            role="progressbar"
+            aria-busy="true"
+          >
+            <Loader2
+              className="w-20 h-20 animate-spin text-gray-400"
+            />
+            <div className="sr-only">Uploading and transcribing...</div>
+          </div>
         ): (
           <>
             <FileUp className={`w-12 h-12 ${isDragActive ? "text-blue-600" : "text-gray-400"}`} />
-            <input {...getInputProps()} />
+            <input
+              data-testid="input-file-upload"
+              {...getInputProps()}
+            />
             <p className={`${isDragActive ? "text-blue-600" : "text-gray-400"}`}>
               Drag and drop your MP3 file(s) here, or click to upload.
             </p>

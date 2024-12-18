@@ -85,7 +85,15 @@ export function Search() {
             </button>
           </form>
           {isLoading ? (
-            <Loader2 className="animate-spin h-12 w-12" />
+            <div
+              role="progressbar"
+              aria-busy="true"
+            >
+              <Loader2
+                className="w-12 h-12 animate-spin text-gray-400"
+              />
+              <div className="sr-only">Uploading and transcribing...</div>
+            </div>
           ): (
             <>
               {data.map((item) => (
