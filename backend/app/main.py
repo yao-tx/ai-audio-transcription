@@ -1,15 +1,15 @@
-from fastapi import FastAPI, File, Depends, HTTPException, Request, UploadFile
+import os
+import uuid
+from typing import List
+
+from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
-from typing import List
-import os
-import uuid
 
 from .schemas import TranscriptionRead, TranscriptionCreate
 from .services.transcription_service import TranscriptionService
 from .routes.transcriptions import router as transcription_router
-
 from .database import create_db_and_tables
 from .models import Transcription
 

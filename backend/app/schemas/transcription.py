@@ -1,6 +1,6 @@
+from datetime import datetime
 from sqlmodel import SQLModel
 from typing import Optional
-from datetime import datetime
 
 class TranscriptionCreate(SQLModel):
   filename: str

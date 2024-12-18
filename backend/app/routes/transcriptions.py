@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Query, File, UploadFile, Depends
+import magic
+import os
+import uuid
+
+from fastapi import APIRouter, Query, File, UploadFile, Depends, HTTPException
 from sqlmodel import Session, select
 from sqlalchemy import desc
 from typing import List, Optional
-import os
-import uuid
-import magic
 
 from ..database import get_session
 from ..models import Transcription
@@ -27,7 +28,7 @@ async def get_transcriptions_by_filename(
   db: Session = Depends(get_session)
 ):
   if not search_term:
-    raise HTTPException(status_code=400, details="Missing search term parameter")
+    raise HTTPException(status_code=400, detail="Missing search term parameter")
 
   statement = select(Transcription).where(Transcription.filename.ilike(f"%{search_term}%"))
   results = db.exec(statement).all()
@@ -37,7 +38,7 @@ async def get_transcriptions_by_filename(
 
 @router.post("/transcribe", response_model=List[TranscriptionRead])
 async def upload_single_or_multiple_files(
-  files: List[UploadFile] = File(...),
+  files: List[UploadFile] = File(default=[]),
   db: Session = Depends(get_session)
 ):
   transcription_service = TranscriptionService()
@@ -75,7 +76,7 @@ async def upload_single_or_multiple_files(
         transcribed_text=full_transcribed_text
       )
 
-      transcription = Transcription(**transcription_data.dict())
+      transcription = Transcription(**transcription_data.model_dump())
       db.add(transcription)
       db.commit()
       db.refresh(transcription)
@@ -83,11 +84,14 @@ async def upload_single_or_multiple_files(
       transcriptions.append({
         "id": transcription.id,
         "filename": transcription.filename,
-        "transcribed_text": transcription.transcribed_text,
+        "transcribed_text": transcription.transcribed_text.strip(),
         "created_at": transcription.created_at
       })
     except Exception as e:
-      print(f"Error processing {file.filename}: {str(e)}")
+      raise HTTPException(
+        status_code=500,
+        detail=f"Error processing {file.filename}: {str(e)}"
+      )
     finally:
       os.unlink(file_path)
 

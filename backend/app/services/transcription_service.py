@@ -1,6 +1,6 @@
-from transformers import WhisperProcessor, WhisperForConditionalGeneration
-import librosa
 import numpy as np
+import librosa
+from transformers import WhisperProcessor, WhisperForConditionalGeneration
 
 class TranscriptionService:
   SAMPLING_RATE = 16000
