@@ -42,7 +42,7 @@ The frontend comes with `Dockerfile` and `docker-compose.yml` files. To get star
 
 1. Clone the repository.
 
-2. In the root directory of the backend project, run the following commands:
+2. In the root directory of the frontend project, run the following commands:
 
 ```bash
 docker-compose build
