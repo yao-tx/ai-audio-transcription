@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# AI Audio Transcription - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
 
-Currently, two official plugins are available:
+This is the frontend of the AI Audio Transcription web app. It is built with React + Vite + TypeScript. TailwindCSS is used for styling.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+It is paired with a FastAPI + Python backend.
 
-## Expanding the ESLint configuration
+## Getting Started (Local Development)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Clone the repository.
 
-- Configure the top-level `parserOptions` property like this:
+2. Install dependencies.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+3. Create a `.env` file and add your environment variables. You can use the `.env.example` file as a template.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+4. Run the development server.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+## Getting Started (Docker)
+
+The frontend comes with `Dockerfile` and `docker-compose.yml` files. To get started with Docker:
+
+1. Clone the repository.
+
+2. In the root directory of the backend project, run the following commands:
+
+```bash
+docker-compose build
+
+docker-compose up -d
+# or
+docker-compose up
+```
+
+## Testing
+
+Test files are located in the `__tests__` directory.
+
+```bash
+npm run test
+# or
+yarn test
+# or
+pnpm test
+# or
+bun test
 ```
